@@ -8,9 +8,9 @@ services:
     network_mode: host
     volumes:
       - ${HOME}/.config/jellyfin:/config
-      - ${HOME}/jellyfin/cache:/cache
-      - ${HOME}/qbittorrent/downloads:/media
-      - ${HOME}/jellyfin/media2:/media2:ro
+      - ${HOME}/server_nas/jellyfin/cache:/cache
+      - ${HOME}/server_nas/qbittorrent/downloads:/media
+      - ${HOME}/server_nas/jellyfin/media2:/media2:ro
     restart: unless-stopped
     
   qbittorrent:
@@ -23,8 +23,8 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - ${HOME}/qbittorrent/config:/config
-      - ${HOME}/qbittorrent/downloads:/downloads
+      - ${HOME}/.config/qbittorrent/config:/config
+      - ${HOME}/server_nas/qbittorrent/downloads:/downloads
     ports:
       - 8080:8080
       - 6881:6881
@@ -39,9 +39,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - ${HOME}/sonarr/config:/config
-      - ${HOME}/sonarr/tvseries:/tv #optional
-      - ${HOME}/qbittorrent/downloads:/downloads #optional
+      - ${HOME}/.config/sonarr/config:/config
+      - ${HOME}/server_nas/sonarr/tvseries:/tv #optional
+      - ${HOME}/server_nas/qbittorrent/downloads:/downloads #optional
     ports:
       - 8989:8989
     restart: unless-stopped
