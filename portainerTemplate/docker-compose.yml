@@ -1,16 +1,30 @@
 version: "3.5"
 
 services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /.config/heimdall/config:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
     user: root
     network_mode: host
     volumes:
-      - ${HOME}/.config/jellyfin:/config
-      - ${HOME}/server_nas/jellyfin/cache:/cache
-      - ${HOME}/server_nas/qbittorrent/downloads:/media
-      - ${HOME}/server_nas/jellyfin/media2:/media2:ro
+      - /.config/jellyfin:/config
+      - /server_nas/jellyfin/cache:/cache
+      - /server_nas/qbittorrent/downloads:/media
+      - /server_nas/jellyfin/media2:/media2:ro
     restart: unless-stopped
     
   qbittorrent:
@@ -23,8 +37,8 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - ${HOME}/.config/qbittorrent/config:/config
-      - ${HOME}/server_nas/qbittorrent/downloads:/downloads
+      - /.config/qbittorrent/config:/config
+      - /server_nas/qbittorrent/downloads:/downloads
     ports:
       - 8080:8080
       - 6881:6881
